@@ -449,6 +449,20 @@ namespace Csla.Reflection
     /// parameters from the params array and from DI
     /// </summary>
     /// <param name="obj">Target object</param>
+    /// <param name="methodName">Name of method to invoke</param>
+    /// <param name="parameters">Criteria params array</param>
+    /// <returns></returns>
+    public async Task<object> CallMethodTryAsync(object obj, string methodName, object[] parameters)
+    {
+      ServiceProviderMethodInfo serviceInfo = FindDataPortalMethod(obj, parameters);
+      return await CallMethodTryAsync(obj, serviceInfo, parameters);
+    }
+
+    /// <summary>
+    /// Invoke a method async if possible, providing
+    /// parameters from the params array and from DI
+    /// </summary>
+    /// <param name="obj">Target object</param>
     /// <param name="method">Method to invoke</param>
     /// <param name="parameters">Criteria params array</param>
     /// <returns></returns>
