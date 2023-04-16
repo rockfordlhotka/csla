@@ -22,8 +22,13 @@ namespace Csla
   /// attributes.
   /// </summary>
   [AttributeUsage(AttributeTargets.Method)]
-  public class DataPortalOperationAttribute : Attribute
-  { }
+  public abstract class DataPortalOperationAttribute : Attribute
+  {
+    /// <summary>
+    /// Get the current data portal operation.
+    /// </summary>
+    public abstract DataPortalOperations GetOperation();
+  }
 
   /// <summary>
   /// Base type for data portal root operation
@@ -48,7 +53,12 @@ namespace Csla
   /// </summary>
   [AttributeUsage(AttributeTargets.Method)]
   public class CreateAttribute : DataPortalRootOperationAttribute
-  { }
+  {
+    /// <summary>
+    /// Get the current data portal operation.
+    /// </summary>
+    public override DataPortalOperations GetOperation() => DataPortalOperations.Create;
+  }
 
   /// <summary>
   /// Specifies a method used by the server-side
@@ -57,7 +67,12 @@ namespace Csla
   /// </summary>
   [AttributeUsage(AttributeTargets.Method)]
   public class FetchAttribute : DataPortalRootOperationAttribute
-  { }
+  {
+    /// <summary>
+    /// Get the current data portal operation.
+    /// </summary>
+    public override DataPortalOperations GetOperation() => DataPortalOperations.Fetch;
+  }
 
   /// <summary>
   /// Specifies a method used by the server-side
@@ -66,7 +81,12 @@ namespace Csla
   /// </summary>
   [AttributeUsage(AttributeTargets.Method)]
   public class InsertAttribute : DataPortalRootOperationAttribute
-  { }
+  {
+    /// <summary>
+    /// Get the current data portal operation.
+    /// </summary>
+    public override DataPortalOperations GetOperation() => DataPortalOperations.Insert;
+  }
 
   /// <summary>
   /// Specifies a method used by the server-side
@@ -75,7 +95,12 @@ namespace Csla
   /// </summary>
   [AttributeUsage(AttributeTargets.Method)]
   public class UpdateAttribute : DataPortalRootOperationAttribute
-  { }
+  {
+    /// <summary>
+    /// Get the current data portal operation.
+    /// </summary>
+    public override DataPortalOperations GetOperation() => DataPortalOperations.Update;
+  }
 
   /// <summary>
   /// Specifies a method used by the server-side
@@ -84,7 +109,12 @@ namespace Csla
   /// </summary>
   [AttributeUsage(AttributeTargets.Method)]
   public class ExecuteAttribute : DataPortalRootOperationAttribute
-  { }
+  {
+    /// <summary>
+    /// Get the current data portal operation.
+    /// </summary>
+    public override DataPortalOperations GetOperation() => DataPortalOperations.Execute;
+  }
 
   /// <summary>
   /// Specifies a method used by the server-side
@@ -93,7 +123,12 @@ namespace Csla
   /// </summary>
   [AttributeUsage(AttributeTargets.Method)]
   public class DeleteAttribute : DataPortalRootOperationAttribute
-  { }
+  {
+    /// <summary>
+    /// Get the current data portal operation.
+    /// </summary>
+    public override DataPortalOperations GetOperation() => DataPortalOperations.Delete;
+  }
 
   /// <summary>
   /// Specifies a method used by the server-side
@@ -102,7 +137,12 @@ namespace Csla
   /// </summary>
   [AttributeUsage(AttributeTargets.Method)]
   public class DeleteSelfAttribute : DataPortalRootOperationAttribute
-  { }
+  {
+    /// <summary>
+    /// Get the current data portal operation.
+    /// </summary>
+    public override DataPortalOperations GetOperation() => DataPortalOperations.Delete;
+  }
 
   /// <summary>
   /// Specifies a method used by the server-side
@@ -111,7 +151,12 @@ namespace Csla
   /// </summary>
   [AttributeUsage(AttributeTargets.Method)]
   public class CreateChildAttribute : DataPortalChildOperationAttribute
-  { }
+  {
+    /// <summary>
+    /// Get the current data portal operation.
+    /// </summary>
+    public override DataPortalOperations GetOperation() => DataPortalOperations.Create;
+  }
 
   /// <summary>
   /// Specifies a method used by the server-side
