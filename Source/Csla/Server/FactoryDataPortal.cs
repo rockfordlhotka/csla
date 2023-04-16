@@ -9,6 +9,7 @@ using System;
 using Csla.Configuration;
 using System.Threading.Tasks;
 using Csla.Properties;
+using Csla.Reflection;
 
 namespace Csla.Server
 {
@@ -38,18 +39,25 @@ namespace Csla.Server
 
     #region Method invokes
 
-    private async Task<DataPortalResult> InvokeMethod(string factoryTypeName, DataPortalOperations operation, string methodName, Type objectType, DataPortalContext context, bool isSync)
+    private async Task<DataPortalResult> InvokeMethod<O>(string factoryTypeName, Type objectType, DataPortalContext context, bool isSync)
+      where O : DataPortalOperationAttribute
     {
+      var typeOfOperation = typeof(O);
       object factory = FactoryLoader.GetFactory(factoryTypeName);
-      var eventArgs = new DataPortalEventArgs(context, objectType, null, operation);
+      var eventArgs = new DataPortalEventArgs(context, objectType, null, );
 
       Csla.Reflection.MethodCaller.CallMethodIfImplemented(factory, "Invoke", eventArgs);
       object result;
       try
       {
-        Utilities.ThrowIfAsyncMethodOnSyncClient(ApplicationContext, isSync, factory, methodName);
+        var serviceProviderMethodCaller = ApplicationContext.GetRequiredService<ServiceProviderMethodCaller>();
+        ServiceProviderMethodInfo serviceInfo = serviceProviderMethodCaller.FindDataPortalMethod<O>(factory);
 
-        result = await Csla.Reflection.MethodCaller.CallMethodTryAsync(factory, methodName).ConfigureAwait(false);
+        Utilities.ThrowIfAsyncMethodOnSyncClient(ApplicationContext, isSync, factory, serviceInfo.MethodInfo.Name);
+
+        result = await serviceProviderMethodCaller.CallMethodTryAsync(factory, serviceInfo, Array.Empty<object>()).ConfigureAwait(false);
+        //result = await Csla.Reflection.MethodCaller.CallMethodTryAsync(factory, methodName).ConfigureAwait(false);
+        
         if (result is Exception error)
           throw error;
 
